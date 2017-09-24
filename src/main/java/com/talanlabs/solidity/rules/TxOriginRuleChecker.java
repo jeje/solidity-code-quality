@@ -18,7 +18,7 @@ import static com.talanlabs.solidity.SolidityParser.VariableDeclarationContext;
 
 /**
  * Checking ownership based on <tt>tx.origin</tt> is vulnerable.
- * See <a href="http://solidity.readthedocs.io/en/latest/security-considerations.html#tx-origin}">http://solidity.readthedocs.io/en/latest/security-considerations.html#tx-origin</a>
+ * See <a href="http://solidity.readthedocs.io/en/latest/security-considerations.html#tx-origin">http://solidity.readthedocs.io/en/latest/security-considerations.html#tx-origin</a>
  */
 public class TxOriginRuleChecker extends RuleChecker {
     private final List<String> variablesLinkedToTxOrigin = new ArrayList<>();
