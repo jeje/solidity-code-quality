@@ -13,6 +13,7 @@ plugins {
     id 'java'
     id 'antlr'
     id 'idea'
+    id 'maven'
 }
 
 repositories {
@@ -48,5 +49,16 @@ clean{
 idea {
     module {
         sourceDirs += file("src/generated/antlr")
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://d:/apps/maven/repository/")
+            pom.version = '1.0'
+            pom.artifactId = 'solidity-code-quality-core'
+            pom.groupId = 'com.talanlabs.solidity'
+        }
     }
 }

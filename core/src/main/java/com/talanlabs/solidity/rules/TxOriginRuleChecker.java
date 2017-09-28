@@ -35,8 +35,8 @@ public class TxOriginRuleChecker extends RuleChecker {
                 && isIdentifier("origin", children.get(2))
                 && isComparedToMsgSender(ctx)) {
             ParserRuleContext parent = ctx.getParent();
-            addValidationError(new ValidationError("tx-origin", ValidationErrorCriticity.CRITICAL,
-                    "Potential vulnerability to tx.origin attack",
+            addValidationError(new ValidationError(getRuleCode(), getRuleCriticity(),
+                    getRuleDescription(),
                     Position.start(parent.start),
                     Position.stop(parent.stop)
             ));
@@ -44,8 +44,8 @@ public class TxOriginRuleChecker extends RuleChecker {
         // comparison of a variable linked to 'tx.origin' with something?
         if (variablesLinkedToTxOrigin.contains(firstChildren.getText()) && isComparedToMsgSender(ctx)) {
             ParserRuleContext parent = ctx.getParent();
-            addValidationError(new ValidationError("tx-origin", ValidationErrorCriticity.CRITICAL,
-                    "Potential vulnerability to tx.origin attack",
+            addValidationError(new ValidationError(getRuleCode(), getRuleCriticity(),
+                    getRuleDescription(),
                     Position.start(parent.start),
                     Position.stop(parent.stop)
             ));
@@ -95,4 +95,18 @@ public class TxOriginRuleChecker extends RuleChecker {
                 && ".".equals(tree.getText());
     }
 
+    @Override
+    public String getRuleCode() {
+        return "tx-origin";
+    }
+
+    @Override
+    public String getRuleDescription() {
+        return "Potential vulnerability to tx.origin attack";
+    }
+
+    @Override
+    public ValidationErrorCriticity getRuleCriticity() {
+        return ValidationErrorCriticity.CRITICAL;
+    }
 }

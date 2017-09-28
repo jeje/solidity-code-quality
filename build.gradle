@@ -15,6 +15,11 @@ plugins {
     id 'idea'
 }
 
+allprojects {
+    group = 'com.talanlabs.solidity'
+    version = '0.1'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()

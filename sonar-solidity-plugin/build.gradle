@@ -1,0 +1,39 @@
+plugins {
+    id "com.iadams.sonar-packaging" version "1.0-RC1"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile project(':core')
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    provided 'org.sonarsource.sonarqube:sonar-plugin-api:6.5'
+}
+
+sonarPackaging {
+    serverUrl = 'http://localhost:9000'
+    pluginDir = 'd:\\Apps\\sonarqube-6.5\\extensions\\plugins\\'
+    pluginKey = 'solidity'
+    pluginClass = 'com.talanlabs.solidity.SolidityPlugin'
+    pluginName = 'Solidity Plugin.'
+    pluginDescription = 'This plugin is a static analyzer for your Solidity smart-contracts.'
+    pluginParent = null
+    pluginLicense = 'GPL3'
+    requirePlugins = null
+    pluginUrl = 'https://github.com/jeje/solidity-code-quality'
+    pluginIssueTrackerUrl = 'https://github.com/jeje/solidity-code-quality/issues'
+//    pluginTermsConditionsUrl = 'http://mypluginwebsite.com/terms'
+    pluginSourceUrl = 'https://github.com/jeje/solidity-code-quality'
+    pluginDevelopers = 'Jerome Bernard'
+    skipDependenciesPackaging = false
+    useChildFirstClassLoader = false
+    basePlugin = ''
+    organization{
+        name = 'Talan Labs'
+        url = 'http://www.talan.fr'
+    }
+}

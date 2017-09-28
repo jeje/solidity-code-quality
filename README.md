@@ -20,6 +20,13 @@ Running Solidity Analyzer on 'ThrowDeprecationContract.sol'...
 [MAJOR] throw-deprecated error ('Throw is deprecated. Use require(), revert() or assert() instead') L9:C9 -> L11:C9
 ```
 
+### Sonar
+
+A Sonar plugin is also available and will be soon released officially for installation.
+
+Sample screenshot:
+![Sample Sonar Plugin Screenshot](docs/sonar-screenshot.png)
+
 ### Analysis
 
 #### Vulnerabilities

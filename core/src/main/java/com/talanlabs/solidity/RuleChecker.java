@@ -1,6 +1,7 @@
 package com.talanlabs.solidity;
 
 import com.talanlabs.solidity.model.ValidationError;
+import com.talanlabs.solidity.model.ValidationErrorCriticity;
 import com.talanlabs.solidity.model.ValidationResults;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -15,6 +16,10 @@ public abstract class RuleChecker extends SolidityBaseVisitor<ValidationResults>
     public RuleChecker() {
         results = new ValidationResults();
     }
+
+    public abstract String getRuleCode();
+    public abstract String getRuleDescription();
+    public abstract ValidationErrorCriticity getRuleCriticity();
 
     @Override
     public ValidationResults visitSourceUnit(SolidityParser.SourceUnitContext ctx) {

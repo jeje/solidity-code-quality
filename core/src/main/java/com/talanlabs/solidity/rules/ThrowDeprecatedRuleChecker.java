@@ -18,12 +18,26 @@ public class ThrowDeprecatedRuleChecker extends RuleChecker {
     public ValidationResults visitThrowStatement(SolidityParser.ThrowStatementContext ctx) {
         SolidityParser.IfStatementContext ifStatementContext = inIfClause(ctx);
         if (ifStatementContext != null) {
-            addValidationError(new ValidationError("throw-deprecated", ValidationErrorCriticity.MAJOR,
-                    "Throw is deprecated. Use require(), revert() or assert() instead",
+            addValidationError(new ValidationError(getRuleCode(), getRuleCriticity(),
+                    getRuleDescription(),
                     Position.start(ifStatementContext.start), Position.stop(ifStatementContext.stop))
             );
         }
         return super.visitThrowStatement(ctx);
     }
 
+    @Override
+    public String getRuleCode() {
+        return "throw-deprecated";
+    }
+
+    @Override
+    public String getRuleDescription() {
+        return "Throw is deprecated. Use require(), revert() or assert() instead";
+    }
+
+    @Override
+    public ValidationErrorCriticity getRuleCriticity() {
+        return ValidationErrorCriticity.MAJOR;
+    }
 }

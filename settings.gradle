@@ -20,3 +20,4 @@ rootProject.name = 'solidity-code-quality'
 
 include 'core'
 include 'cli'
+include 'sonar-solidity-plugin'

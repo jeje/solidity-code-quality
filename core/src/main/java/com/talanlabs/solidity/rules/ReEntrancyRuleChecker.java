@@ -18,7 +18,7 @@ public class ReEntrancyRuleChecker extends RuleChecker {
             while (!parent.getClass().isAssignableFrom(SolidityParser.IfStatementContext.class)) {
                 parent = parent.getParent();
             }
-            addValidationError(new ValidationError("re-entrancy", ValidationErrorCriticity.BLOCKER,
+            addValidationError(new ValidationError(getRuleCode(), getRuleCriticity(),
                     "Function withdraw() is vulnerable to re-entrancy", Position.start(parent.start), Position.stop(parent.stop))
             );
         }
@@ -28,10 +28,24 @@ public class ReEntrancyRuleChecker extends RuleChecker {
     @Override
     public ValidationResults visitIdentifierList(SolidityParser.IdentifierListContext ctx) {
         if ("send".equals(ctx.getText()))
-            addValidationError(new ValidationError("re-entrancy", ValidationErrorCriticity.BLOCKER,
+            addValidationError(new ValidationError(getRuleCode(), getRuleCriticity(),
                     "Function withdraw() is vulnerable to re-entrancy", Position.start(ctx.start), Position.stop(ctx.stop))
             );
         return super.visitIdentifierList(ctx);
     }
 
+    @Override
+    public String getRuleCode() {
+        return "re-entrancy";
+    }
+
+    @Override
+    public String getRuleDescription() {
+        return "Function is vulnerable to re-entrancy";
+    }
+
+    @Override
+    public ValidationErrorCriticity getRuleCriticity() {
+        return ValidationErrorCriticity.BLOCKER;
+    }
 }
