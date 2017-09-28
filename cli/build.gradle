@@ -11,8 +11,8 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'antlr'
-    id 'idea'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
 repositories {
@@ -20,3 +20,15 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
+dependencies {
+    compile project(':core')
+    compile 'args4j:args4j:2.33'
+}
+
+shadowJar {
+    baseName = 'solidity-analyzer'
+    classifier = null
+    version = null
+}
+mainClassName = "com.talanlabs.solidity.Main"

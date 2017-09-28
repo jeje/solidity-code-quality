@@ -17,3 +17,6 @@ include 'services:webservice'
 */
 
 rootProject.name = 'solidity-code-quality'
+
+include 'core'
+include 'cli'

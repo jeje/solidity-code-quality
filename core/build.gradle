@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name 'JFrog OSS snapshot repo'
+            url  'https://oss.jfrog.org/oss-snapshot-local/'
+        }
+        jcenter()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'antlr'
+    id 'idea'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.7"
+    compile "org.antlr:antlr4-runtime:4.7"
+    testCompile 'junit:junit:4.12'
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-package', 'com.talanlabs.solidity']
+    arguments += ["-visitor", "-long-messages"]
+    outputDirectory = new File("src/generated/antlr/com/talanlabs/solidity".toString())
+}
+compileJava.dependsOn generateGrammarSource
+sourceSets {
+    generated {
+        java.srcDir 'src/generated/antlr/'
+    }
+}
+compileJava.source sourceSets.generated.java, sourceSets.main.java
+
+clean{
+    delete "src/generated"
+}
+
+idea {
+    module {
+        sourceDirs += file("src/generated/antlr")
+    }
+}
