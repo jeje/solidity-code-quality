@@ -68,6 +68,17 @@ public abstract class RuleChecker extends SolidityBaseVisitor<ValidationResults>
                 && value.equals(ctx.children.get(2).getText());
     }
 
+    protected SolidityParser.IfStatementContext inIfClause(SolidityParser.ThrowStatementContext ctx) {
+        SolidityParser.IfStatementContext ifStatementContext = null;
+        ParserRuleContext parent = ctx;
+        while (parent.getParent() != null) {
+           parent = parent.getParent();
+           if (SolidityParser.IfStatementContext.class.isAssignableFrom(parent.getClass()))
+               ifStatementContext = (SolidityParser.IfStatementContext) parent;
+        }
+        return ifStatementContext;
+    }
+
     protected boolean isComparedToSomething(SolidityParser.ExpressionContext ctx) {
         ParserRuleContext parent = ctx.getParent();
         boolean isParentAnExpression = SolidityParser.ExpressionContext.class.isAssignableFrom(parent.getClass());

@@ -4,10 +4,7 @@ import com.talanlabs.solidity.model.Position;
 import com.talanlabs.solidity.model.ValidationError;
 import com.talanlabs.solidity.model.ValidationErrorCriticity;
 import com.talanlabs.solidity.model.ValidationResults;
-import com.talanlabs.solidity.rules.FallbackRuleChecker;
-import com.talanlabs.solidity.rules.PayableRuleChecker;
-import com.talanlabs.solidity.rules.ReEntrancyRuleChecker;
-import com.talanlabs.solidity.rules.TxOriginRuleChecker;
+import com.talanlabs.solidity.rules.*;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 
@@ -40,6 +37,18 @@ public class ParserTest {
         assertEquals(new ValidationError("tx-origin", ValidationErrorCriticity.CRITICAL,
                 "Potential vulnerability to tx.origin attack", new Position(38,17), new Position(38,26)), fifthError);
     }
+
+    @Test
+    public void test_throw_deprecation_checks() throws IOException {
+        SourceUnitContext tree = parse("src/test/antlr/ThrowDeprecationContract.sol");
+        RuleChecker visitor = new ThrowDeprecatedRuleChecker();
+        ValidationResults results = visitor.visit(tree);
+        assertEquals(1, results.getErrors().size());
+        ValidationError firstError = results.getErrors().get(0);
+        assertEquals(new ValidationError("throw-deprecated", ValidationErrorCriticity.MAJOR,
+                "Throw is deprecated. Use require(), revert() or assert() instead", new Position(9, 9), new Position(11, 9)), firstError);
+    }
+
 
     /*
     @Test
