@@ -9,9 +9,13 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'antlr'
+plugins {
+    id 'java'
+    id 'idea'
+    id 'antlr'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
 
 repositories {
     mavenLocal()
@@ -22,8 +26,16 @@ repositories {
 dependencies {
     antlr "org.antlr:antlr4:4.7"
     compile "org.antlr:antlr4-runtime:4.7"
+    compile 'args4j:args4j:2.33'
     testCompile 'junit:junit:4.12'
 }
+
+shadowJar {
+    baseName = 'solidity-analyzer'
+    classifier = null
+    version = null
+}
+mainClassName = "com.talanlabs.solidity.Main"
 
 generateGrammarSource {
     maxHeapSize = "64m"

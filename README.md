@@ -5,6 +5,21 @@ This tool analyzes Solidity contracts for known vulnerabilities or bad practices
 This is still a work in progress though.
 In the end it will be provided as both a CLI tool and a Sonar plugin for CI pipelines.
 
+### CLI
+
+A command-line tool is provided and can simply be run like this:
+```
+java -jar solidity-analyzer.jar -f <MyContract>.sol
+```
+
+Example of the output:
+```
+> java -jar solidity-analyzer.jar -f ThrowDeprecationContract.sol
+Running Solidity Analyzer on 'ThrowDeprecationContract.sol'...
+1 error(s) found!
+[MAJOR] throw-deprecated error ('Throw is deprecated. Use require(), revert() or assert() instead') L9:C9 -> L11:C9
+```
+
 ### Analysis
 
 #### Vulnerabilities
