@@ -19,13 +19,15 @@ buildscript {
 plugins {
     id 'java'
     id 'antlr'
+    id 'maven'
     id 'idea'
     id 'org.sonarqube' version '2.5'
+    id "com.jfrog.bintray" version "1.7.3"
 }
 
 allprojects {
     ext.baseVersion = "0.1"
-    ext.snapshotVersion = true
+    ext.snapshotVersion = false
     group = 'com.talanlabs.solidity'
     version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
 }

@@ -37,3 +37,25 @@ sonarPackaging {
         url = 'http://www.talan.fr'
     }
 }
+
+bintray {
+    user = 'kalixia'
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'sonar-solidity-plugin'
+        userOrg = user
+        licenses = ['GPL-3.0']
+        vcsUrl = 'https://github.com/jeje/solidity-code-quality.git'
+        publicDownloadNumbers = true
+        githubRepo = 'jeje/solidity-code-quality'
+        version {
+            name = '0.1'
+//            desc = 'Gradle Bintray Plugin 1.0 final'
+            released  = new Date()
+//            vcsTag = '0.1'
+//            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+    }
+}
