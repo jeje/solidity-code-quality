@@ -9,8 +9,7 @@ import org.sonar.api.utils.ValidationMessages;
 import static com.talanlabs.solidity.SolidityPlugin.LANGUAGE_KEY;
 import static com.talanlabs.solidity.SolidityRulesDefinition.REPOSITORY_KEY;
 
-public
-class SolidityProfile extends ProfileDefinition {
+public class SolidityProfile extends ProfileDefinition {
     public static final String PROFILE_NAME = "Default";
     private final RuleFinder ruleFinder;
 

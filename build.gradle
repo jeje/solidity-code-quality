@@ -5,7 +5,14 @@ buildscript {
             name 'JFrog OSS snapshot repo'
             url  'https://oss.jfrog.org/oss-snapshot-local/'
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         jcenter()
+    }
+    dependencies {
+//        classpath 'org.ajoberstar:gradle-jacoco:0.1.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5'
     }
 }
 
@@ -13,15 +20,26 @@ plugins {
     id 'java'
     id 'antlr'
     id 'idea'
+    id 'org.sonarqube' version '2.5'
 }
 
 allprojects {
+    ext.baseVersion = "0.1"
+    ext.snapshotVersion = true
     group = 'com.talanlabs.solidity'
-    version = '0.1'
+    version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
 }
 
 repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Solidity Scanner"
+        property "sonar.projectKey", "com.talanlabs.solidity:solidity"
+        property "sonar.sourceEncoding", "UTF-8"
+    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class SolidityRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "Solidity";
     public static final String REPOSITORY_NAME = "SonarAnalyzer";
-    public static final List<RuleChecker> rules = Arrays.asList(
+    protected static final List<RuleChecker> rules = Arrays.asList(
             new ThrowDeprecatedRuleChecker(),
             new TxOriginRuleChecker()
     );

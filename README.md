@@ -5,6 +5,8 @@ This tool analyzes Solidity contracts for known vulnerabilities or bad practices
 This is still a work in progress though.
 In the end it will be provided as both a CLI tool and a Sonar plugin for CI pipelines.
 
+![Travis Build Status](https://travis-ci.org/jeje/solidity-code-quality.svg?branch=master)
+
 ### CLI
 
 A command-line tool is provided and can simply be run like this:
