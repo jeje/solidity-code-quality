@@ -1,7 +1,5 @@
 package com.talanlabs.solidity.model;
 
-import org.antlr.v4.runtime.Token;
-
 import java.util.Objects;
 
 public class ValidationError {

@@ -9,7 +9,6 @@ import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.rule.RulesDefinition;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class SolidityRulesDefinition implements RulesDefinition {

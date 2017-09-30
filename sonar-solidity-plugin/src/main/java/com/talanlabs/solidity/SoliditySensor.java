@@ -18,13 +18,11 @@ import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
-import org.sonar.api.issue.Issuable;
 import org.sonar.api.rule.RuleKey;
 
 import java.io.IOException;
 import java.util.List;
 
-import static com.talanlabs.solidity.SolidityPlugin.LANGUAGE_KEY;
 import static com.talanlabs.solidity.SolidityRulesDefinition.REPOSITORY_KEY;
 
 public class SoliditySensor implements Sensor {
@@ -44,9 +42,10 @@ public class SoliditySensor implements Sensor {
     }
 
     private void analyzeContract(SensorContext context, InputFile file) {
+        String absoluteFilePath = file.absolutePath();
         try {
-            LOG.info("Analyzing Solidity contract '{}'...", file.absolutePath());
-            SolidityParser.SourceUnitContext tree = parse(file.absolutePath());
+            LOG.info("Analyzing Solidity contract '{}'...", absoluteFilePath);
+            SolidityParser.SourceUnitContext tree = parse(absoluteFilePath);
             RuleChecker visitor = new ThrowDeprecatedRuleChecker();
             ValidationResults results = visitor.visit(tree);
             List<ValidationError> errors = results.getErrors();
@@ -56,7 +55,7 @@ public class SoliditySensor implements Sensor {
             for (ValidationError error : errors) {
                 NewIssue issue = context.newIssue()
                         .forRule(RuleKey.of(REPOSITORY_KEY, error.getCode()));
-                LOG.info("Found {} issue: {} in file {}", error.getCriticity(), error.getCode(), file.absolutePath());
+                LOG.info("Found {} issue: {} in file {}", error.getCriticity(), error.getCode(), absoluteFilePath);
                 issue.at(
                         issue.newLocation()
                                 .on(file)
@@ -69,7 +68,7 @@ public class SoliditySensor implements Sensor {
                 issue.save();
             }
         } catch (IOException e) {
-            LOG.error("Can't analyze contract '" + file.absolutePath() + "'", e);
+            LOG.error("Can't analyze contract '" + absoluteFilePath + "'", e);
         }
     }
 
@@ -83,8 +82,9 @@ public class SoliditySensor implements Sensor {
                 return Severity.MAJOR;
             case MINOR:
                 return Severity.MINOR;
+            default:
+                throw new UnsupportedOperationException("Can't convert " + error.getCriticity() + " to Sonar criticity");
         }
-        throw new UnsupportedOperationException("Can't convert " + error.getCriticity() + " to Sonar criticity");
     }
 
     private static SolidityParser.SourceUnitContext parse(String fileName) throws IOException {

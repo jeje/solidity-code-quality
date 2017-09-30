@@ -40,7 +40,7 @@ public class Main {
             RuleChecker visitor = new ThrowDeprecatedRuleChecker();
             ValidationResults results = visitor.visit(tree);
             List<ValidationError> errors = results.getErrors();
-            if (errors.size() > 0) {
+            if (!errors.isEmpty()) {
                 System.out.printf("%s error(s) found!%n", errors.size());
                 for (ValidationError error : errors) {
                     System.out.printf("[%s] %s error ('%s') %s%n",

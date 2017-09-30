@@ -64,7 +64,6 @@ public class TxOriginRuleChecker extends RuleChecker {
         ParseTree firstSibling = parent.children.get(1);
         if (isTerminalNode("=", firstSibling)) {
             ParseTree secondSibling = parent.children.get(2);
-            String value = secondSibling.getText();
             if ("tx.origin".equals(secondSibling.getText())) {
                 variablesLinkedToTxOrigin.add(var);
             } else if ("msg.sender".equals(secondSibling.getText())) {
