@@ -26,8 +26,8 @@ plugins {
 }
 
 allprojects {
-    ext.baseVersion = "0.1"
-    ext.snapshotVersion = false
+    ext.baseVersion = '0.2'
+    ext.snapshotVersion = true
     group = 'com.talanlabs.solidity'
     version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
 }

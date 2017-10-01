@@ -1,23 +1,17 @@
 package com.talanlabs.solidity;
 
-import com.talanlabs.solidity.rules.ThrowDeprecatedRuleChecker;
-import com.talanlabs.solidity.rules.TxOriginRuleChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.rule.RuleStatus;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.rule.RulesDefinition;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class SolidityRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "Solidity";
     public static final String REPOSITORY_NAME = "SonarAnalyzer";
-    protected static final List<RuleChecker> rules = Arrays.asList(
-            new ThrowDeprecatedRuleChecker(),
-            new TxOriginRuleChecker()
-    );
+    protected static final List<RuleChecker> rules = new RulesRepository().getRules();
 
     private static final Logger LOG = LoggerFactory.getLogger(SolidityRulesDefinition.class);
 
