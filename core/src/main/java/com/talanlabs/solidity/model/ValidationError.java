@@ -42,16 +42,16 @@ public class ValidationError {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ValidationError that = (ValidationError) o;
-        return Objects.equals(code, that.code) &&
-                criticity == that.criticity &&
-                Objects.equals(message, that.message) &&
-                Objects.equals(start, that.start) &&
-                Objects.equals(stop, that.stop);
+        return Objects.equals(getCode(), that.getCode()) &&
+                getCriticity() == that.getCriticity() &&
+                Objects.equals(getMessage(), that.getMessage()) &&
+                Objects.equals(getStart(), that.getStart()) &&
+                Objects.equals(getStop(), that.getStop());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, criticity, message, start, stop);
+        return Objects.hash(getCode(), getCriticity(), getMessage(), getStart(), getStop());
     }
 
     @Override

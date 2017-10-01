@@ -4,11 +4,8 @@ import com.talanlabs.solidity.model.ValidationError;
 import com.talanlabs.solidity.model.ValidationErrorCriticity;
 import com.talanlabs.solidity.model.ValidationResults;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.util.List;
 
 public abstract class RuleChecker extends SolidityBaseVisitor<ValidationResults> {
     private final ValidationResults results;

@@ -13,6 +13,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '2.0.1'
+    id 'jacoco'
 }
 
 repositories {
@@ -24,6 +25,7 @@ repositories {
 dependencies {
     compile project(':core')
     compile 'args4j:args4j:2.33'
+    testCompile 'junit:junit:4.12'
 }
 
 shadowJar {

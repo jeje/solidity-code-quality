@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.talanlabs.solidity.SolidityParser.SourceUnitContext;
 import static org.junit.Assert.assertEquals;
@@ -50,6 +51,17 @@ public class ParserTest {
         ValidationError firstError = results.getErrors().get(0);
         assertEquals(new ValidationError("throw-deprecated", ValidationErrorCriticity.MAJOR,
                 "Throw is deprecated. Use require(), revert() or assert() instead", new Position(9, 9), new Position(11, 9)), firstError);
+    }
+
+    @Test
+    public void test_multiple_errors_on_multiple_contracts() throws IOException {
+        SourceUnitContext tree = parse("src/test/antlr/MultipleErrorsContract.sol");
+        RulesRepository rulesRepository = new RulesRepository();
+        List<RuleChecker> rules = rulesRepository.getRules();
+        for (RuleChecker rule : rules) {
+            ValidationResults results = rule.visit(tree);
+            assertEquals(1, results.getErrors().size());
+        }
     }
 
     private static SourceUnitContext parse(String fileName) throws IOException {

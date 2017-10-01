@@ -16,35 +16,32 @@ public class Scanner {
         rules = new RulesRepository().getRules();
     }
 
-    public void scan(String contract) {
+    public ValidationResults scan(String contract) throws IOException {
         System.out.println("Running Solidity Analyzer on '" + contract + "'...");
-        try {
-            SolidityParser.SourceUnitContext tree = parse(contract);
-            ValidationResults globalResults = new ValidationResults();
-            for (RuleChecker rule : rules) {
-                ValidationResults results = rule.visit(tree);
-                List<ValidationError> errors = results.getErrors();
-                // add each error to the global validation errors
-                errors.forEach(globalResults::addValidationError);
-            }
-            // dump errors found
-            List<ValidationError> errors = globalResults.getErrors();
-            if (!errors.isEmpty()) {
-                System.out.printf("%s error(s) found!%n", errors.size());
-                for (ValidationError error : errors) {
-                    System.out.printf("[%s] %s error ('%s') %s%n",
-                            error.getCriticity(),
-                            error.getCode(),
-                            error.getMessage(),
-                            String.format("L%d:C%d -> L%d:C%d",
-                                    error.getStart().getLine(), error.getStart().getColumn(),
-                                    error.getStop().getLine(), error.getStop().getColumn()
-                            ));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        SolidityParser.SourceUnitContext tree = parse(contract);
+        ValidationResults globalResults = new ValidationResults();
+        for (RuleChecker rule : rules) {
+            ValidationResults results = rule.visit(tree);
+            List<ValidationError> errors = results.getErrors();
+            // add each error to the global validation errors
+            errors.forEach(globalResults::addValidationError);
         }
+        // dump errors found
+        List<ValidationError> errors = globalResults.getErrors();
+        if (!errors.isEmpty()) {
+            System.out.printf("%s error(s) found!%n", errors.size());
+            for (ValidationError error : errors) {
+                System.out.printf("[%s] %s error ('%s') %s%n",
+                        error.getCriticity(),
+                        error.getCode(),
+                        error.getMessage(),
+                        String.format("L%d:C%d -> L%d:C%d",
+                                error.getStart().getLine(), error.getStart().getColumn(),
+                                error.getStop().getLine(), error.getStop().getColumn()
+                        ));
+            }
+        }
+        return globalResults;
     }
 
     private static SolidityParser.SourceUnitContext parse(String fileName) throws IOException {

@@ -26,11 +26,12 @@ import java.util.List;
 import static com.talanlabs.solidity.SolidityRulesDefinition.REPOSITORY_KEY;
 
 public class SoliditySensor implements Sensor {
+    public static final String NAME = "Solidity Sensor";
     private static final Logger LOG = LoggerFactory.getLogger(SoliditySensor.class);
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-        descriptor.name("Solidity Sensor");
+        descriptor.name(NAME);
         descriptor.createIssuesForRuleRepository(REPOSITORY_KEY);
     }
 
@@ -46,26 +47,29 @@ public class SoliditySensor implements Sensor {
         try {
             LOG.info("Analyzing Solidity contract '{}'...", absoluteFilePath);
             SolidityParser.SourceUnitContext tree = parse(absoluteFilePath);
-            RuleChecker visitor = new ThrowDeprecatedRuleChecker();
-            ValidationResults results = visitor.visit(tree);
-            List<ValidationError> errors = results.getErrors();
-            LOG.info("Found {} error(s)", errors.size());
+            RulesRepository rulesRepository = new RulesRepository();
+            for (RuleChecker rule : rulesRepository.getRules()) {
+                RuleChecker visitor = new ThrowDeprecatedRuleChecker();
+                ValidationResults results = rule.visit(tree);
+                List<ValidationError> errors = results.getErrors();
+                LOG.info("Found {} error(s)", errors.size());
 
-            // loop through all detected errors and generate appropriate Sonar errors
-            for (ValidationError error : errors) {
-                NewIssue issue = context.newIssue()
-                        .forRule(RuleKey.of(REPOSITORY_KEY, error.getCode()));
-                LOG.info("Found {} issue: {} in file {}", error.getCriticity(), error.getCode(), absoluteFilePath);
-                issue.at(
-                        issue.newLocation()
-                                .on(file)
-                                .message(error.getMessage())
-                                .at(new DefaultTextRange(
-                                        new DefaultTextPointer(error.getStart().getLine(), error.getStart().getColumn()),
-                                        new DefaultTextPointer(error.getStop().getLine(), error.getStop().getColumn()))
-                                )
-                );
-                issue.save();
+                // loop through all detected errors and generate appropriate Sonar errors
+                for (ValidationError error : errors) {
+                    NewIssue issue = context.newIssue()
+                            .forRule(RuleKey.of(REPOSITORY_KEY, error.getCode()));
+                    LOG.info("Found {} issue: {} in file {}", error.getCriticity(), error.getCode(), absoluteFilePath);
+                    issue.at(
+                            issue.newLocation()
+                                    .on(file)
+                                    .message(error.getMessage())
+                                    .at(new DefaultTextRange(
+                                            new DefaultTextPointer(error.getStart().getLine(), error.getStart().getColumn()),
+                                            new DefaultTextPointer(error.getStop().getLine(), error.getStop().getColumn()))
+                                    )
+                    );
+                    issue.save();
+                }
             }
         } catch (IOException e) {
             LOG.error("Can't analyze contract '" + absoluteFilePath + "'", e);
