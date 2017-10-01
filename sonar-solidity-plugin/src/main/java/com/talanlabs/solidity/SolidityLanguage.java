@@ -12,6 +12,6 @@ public class SolidityLanguage extends AbstractLanguage {
 
     @Override
     public String[] getFileSuffixes() {
-        return new String[] { "sol "};
+        return new String[] { "sol"};
     }
 }

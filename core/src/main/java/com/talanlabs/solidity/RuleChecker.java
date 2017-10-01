@@ -31,28 +31,6 @@ public abstract class RuleChecker extends SolidityBaseVisitor<ValidationResults>
         results.addValidationError(error);
     }
 
-    protected Token min(Token token1, Token token2) {
-        if (token1.getLine() > token2.getLine())
-            return token2;
-        else if (token1.getLine() < token2.getLine())
-            return token1;
-        else if (token1.getCharPositionInLine() <= token2.getCharPositionInLine())
-            return token1;
-        else
-            return token2;
-    }
-
-    protected Token max(Token token1, Token token2) {
-        if (token1.getLine() > token2.getLine())
-            return token1;
-        else if (token1.getLine() < token2.getLine())
-            return token2;
-        else if (token1.getCharPositionInLine() >= token2.getCharPositionInLine())
-            return token1;
-        else
-            return token2;
-    }
-
     protected boolean isExpression(ParseTree tree) {
         return SolidityParser.ExpressionContext.class.isAssignableFrom(tree.getClass());
     }
@@ -82,18 +60,6 @@ public abstract class RuleChecker extends SolidityBaseVisitor<ValidationResults>
                ifStatementContext = (SolidityParser.IfStatementContext) parent;
         }
         return ifStatementContext;
-    }
-
-    protected boolean isComparedToSomething(SolidityParser.ExpressionContext ctx) {
-        ParserRuleContext parent = ctx.getParent();
-        boolean isParentAnExpression = SolidityParser.ExpressionContext.class.isAssignableFrom(parent.getClass());
-        List<ParseTree> siblings = parent.children;
-        boolean comparedToSomething = siblings.stream()
-                .anyMatch(parseTree ->
-                        TerminalNode.class.isAssignableFrom(parseTree.getClass())
-                                && "==".equals(parseTree.getText())
-                );
-        return isParentAnExpression && siblings.size() > 2 && comparedToSomething;
     }
 
 }

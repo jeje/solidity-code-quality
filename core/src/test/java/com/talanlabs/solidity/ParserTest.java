@@ -4,8 +4,11 @@ import com.talanlabs.solidity.model.Position;
 import com.talanlabs.solidity.model.ValidationError;
 import com.talanlabs.solidity.model.ValidationErrorCriticity;
 import com.talanlabs.solidity.model.ValidationResults;
-import com.talanlabs.solidity.rules.*;
-import org.antlr.v4.runtime.*;
+import com.talanlabs.solidity.rules.ThrowDeprecatedRuleChecker;
+import com.talanlabs.solidity.rules.TxOriginRuleChecker;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -48,42 +51,6 @@ public class ParserTest {
         assertEquals(new ValidationError("throw-deprecated", ValidationErrorCriticity.MAJOR,
                 "Throw is deprecated. Use require(), revert() or assert() instead", new Position(9, 9), new Position(11, 9)), firstError);
     }
-
-
-    /*
-    @Test
-    public void test_reentrancy_checks() throws IOException {
-        SourceUnitContext tree = parse("src/test/antlr/ReEntrancyContract.sol");
-        RuleChecker visitor = new ReEntrancyRuleChecker();
-        ValidationResults results = visitor.visit(tree);
-        assertEquals(1, results.getErrors().size());
-        ValidationError error = results.getErrors().get(0);
-        assertEquals(new ValidationError("re-entrancy", ValidationErrorCriticity.BLOCKER,
-                "Function withdraw() is vulnerable to re-entrancy", new Position(10,9), new Position(11,31)), error);
-    }
-
-    @Test
-    public void test_payable_checks() throws IOException {
-        SourceUnitContext tree = parse("src/test/antlr/PayableContract.sol");
-        RuleChecker visitor = new PayableRuleChecker();
-        ValidationResults results = visitor.visit(tree);
-        assertEquals(1, results.getErrors().size());
-        ValidationError error = results.getErrors().get(0);
-        assertEquals(new ValidationError("payable", ValidationErrorCriticity.INFO,
-                "Function getCash() is a payable method. Take care!", new Position(8,5), new Position(10,5)), error);
-    }
-
-    @Test
-    public void test_fallback_checks() throws IOException {
-        SourceUnitContext tree = parse("src/test/antlr/FallbackContract.sol");
-        RuleChecker visitor = new FallbackRuleChecker();
-        ValidationResults results = visitor.visit(tree);
-        assertEquals(1, results.getErrors().size());
-        ValidationError error = results.getErrors().get(0);
-        assertEquals(new ValidationError("fallback", ValidationErrorCriticity.INFO,
-                "Fallback function detected. Take care!", new Position(5,5), new Position(7,5)), error);
-    }
-    */
 
     private static SourceUnitContext parse(String fileName) throws IOException {
         CharStream input = CharStreams.fromFileName(fileName);
